@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 import requests
+import os
 
-app = Flask(_name_)
+app = Flask(__name__)
 
-# Replace with your actual Page Access Token
-PAGE_ACCESS_TOKEN = "YOUR_PAGE_ACCESS_TOKEN"
+VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
+PAGE_ACCESS_TOKEN = os.getenv("PAGE_ACCESS_TOKEN")
 
 @app.route("/webhook", methods=["GET", "POST"])
 def webhook():
@@ -13,8 +14,8 @@ def webhook():
         token = request.args.get("hub.verify_token")
         challenge = request.args.get("hub.challenge")
 
-        if mode == "subscribe" and token == "YOUR_VERIFY_TOKEN":
-            return challenge
+if mode == "subscribe" and token == VERIFY_TOKEN:
+    return challenge
         else:
             return "Forbidden", 403
 
